@@ -14,11 +14,9 @@ class LoginView(View):
         return render(request, 'authentication/login.html')
 
 
-
 class SetPasswordView(View):
     def get(self, request):
         return render(request, 'authentication/set-newpassword.html')
-
 
 
 class ResetPasswordView(View):
