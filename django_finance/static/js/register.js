@@ -1,7 +1,7 @@
 // console.log('register working')
 
 const usernameField = document.querySelector('#usernameField');
-const feedbackArea = document.querySelector('.invalid-feedback')
+const feedbackArea = document.querySelector('.invalid-username');
 
 usernameField.addEventListener('keyup', (e) => {
     // console.log('Username Event');
@@ -31,4 +31,36 @@ usernameField.addEventListener('keyup', (e) => {
         });
     }
      
+});
+
+
+const emailField = document.querySelector('#emailField');
+const emailArea = document.querySelector('.invalid-email');
+
+emailField.addEventListener('keyup', (e) => {
+    const emailVal = e.target.value; //Getting the event value
+
+    // Adding Default value on CSS properties
+    emailField.classList.remove("is-invalid")
+    emailArea.style.display = 'none'
+
+    // Check whether the username is Available or not
+    if(emailVal.length>0)
+    {
+        // Making an API call
+        fetch('/authentication/validate-email/', {
+            body: JSON.stringify({email: emailVal}), 
+            method: 'POST',
+        })
+        .then(res=>res.json())
+        .then(data=>{
+            console.log('data', data)
+            if(data.email_error){
+                // Adding Error CSS and Message
+                emailField.classList.add("is-invalid")
+                emailArea.style.display = 'block'
+                emailArea.innerHTML = `<p>${data.email_error}</p>`
+            }
+        });
+    }
 });
