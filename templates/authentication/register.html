@@ -1,4 +1,5 @@
 {% extends 'base_auth.html' %}
+{% load static %}
 
 
 {% block title %}
@@ -24,6 +25,9 @@ Register
                             <label for="emailField">Username</label>
                             <input type="text" name="username" class="form-control" id="usernameField" placeholder="Username">
                         </div>
+                        <div class="invalid-feedback" style="display:none;">
+                            
+                        </div>
 
                         <div class="form-group">
                             <label for="emailField">Email address</label>
@@ -48,11 +52,13 @@ Register
                 </div>
 
                 <div class="card-footer">
-                    <label>Forgot Password? <a href="#">Click Here.</a></label>
+                    <label>Have an Account? <a href="#">Login.</a></label>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4"></div>
     </div>
+
+    <script src="{% static 'js/register.js' %}"></script>
 {% endblock content %}
