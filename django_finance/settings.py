@@ -1,4 +1,5 @@
 import os
+from django.contrib import messages # To change ERROR into Danger
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -110,4 +111,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'django_finance/static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static') # It'll be automatically created in production
+
+
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger'
+}
 

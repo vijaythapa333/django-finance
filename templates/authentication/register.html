@@ -21,6 +21,10 @@ Register
                 <div class="card-body">
                     <form method="post" action="">
 
+                        {% include 'partials/_messages.html' %}
+
+                        {% csrf_token %}
+
                         <div class="form-group">
                             <label for="usernameField">Username</label>
                             <input type="text" name="username" class="form-control" id="usernameField" placeholder="Username">
