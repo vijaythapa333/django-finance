@@ -26,16 +26,18 @@ Register
                             <input type="text" name="username" class="form-control" id="usernameField" placeholder="Username">
                         </div>
                         <div class="invalid-username invalid-feedback" style="display:none;"></div>
+                        <p class="text-sm text-success usernameSuccessOutput"> </p>
 
                         <div class="form-group">
                             <label for="emailField">Email address</label>
                             <input type="email" name="email" class="form-control" id="emailField" placeholder="Email">
                         </div>
                         <div class="invalid-email invalid-feedback" style="display:none;"></div>
+                        {% comment %} <p class="text-sm text-success emailSuccessOutput">Email is Valid.</p> {% endcomment %}
 
                         <div class="form-group">
                             <label for="passwordField">Password</label>
-                            <small class="float-right py-1">SHOW</small>
+                            <small class="showPasswordToggle float-right py-1">SHOW</small>
                             <input type="password" name="password" class="form-control" id="passwordField" placeholder="Password">
                             
                         </div>
