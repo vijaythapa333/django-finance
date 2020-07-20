@@ -27,14 +27,14 @@ Register
 
                         <div class="form-group">
                             <label for="usernameField">Username</label>
-                            <input type="text" name="username" class="form-control" id="usernameField" placeholder="Username">
+                            <input type="text" name="username" class="form-control" id="usernameField" placeholder="Username" value="{{ fieldValues.username }}">
                         </div>
                         <div class="invalid-username invalid-feedback" style="display:none;"></div>
                         <p class="text-sm text-success usernameSuccessOutput"> </p>
 
                         <div class="form-group">
                             <label for="emailField">Email address</label>
-                            <input type="email" name="email" class="form-control" id="emailField" placeholder="Email">
+                            <input type="email" name="email" class="form-control" id="emailField" placeholder="Email" value="{{ fieldValues.email }}">
                         </div>
                         <div class="invalid-email invalid-feedback" style="display:none;"></div>
                         {% comment %} <p class="text-sm text-success emailSuccessOutput">Email is Valid.</p> {% endcomment %}
@@ -51,7 +51,7 @@ Register
                             <label class="form-check-label" for="exampleCheck1">I agree to the <a href="#">terms and conditions</a>.</label>
                         </div>
 
-                        <button type="submit" class="btn btn-primary btn-block">Register</button>
+                        <button type="submit" class="btn btn-primary btn-block submit-btn">Register</button>
 
                     </form>
                 </div>

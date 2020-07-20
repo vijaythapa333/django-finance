@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 import json
 from django.http import JsonResponse
@@ -49,8 +49,43 @@ class RegistrationView(View):
         return render(request, 'authentication/register.html')
     
     def post(self, request):
-        messages.success(request, 'Registered Successfully')
-        return render(request, 'authentication/register.html')
+        # GET user Data to Register
+        username = request.POST['username']
+        email = request.POST['email']
+        password = request.POST['password']
+
+        # For displaying selected email and username when password error
+        context = {
+            'fieldValues': request.POST # Gets all values from POST request
+        }
+
+        # VALIDATE (Django Validation)
+        # Check whether the email and username are available or not
+        if not User.objects.filter(username=username).exists():
+            if not User.objects.filter(email=email).exists():
+
+                if len(password)<6:
+                    messages.error(request, 'Password must be atleast 6 characters long.')
+                    return render(request, 'authentication/register.html', context)
+                
+                # CREATE USER ACCOUNT
+                user = User.objects.create_user(username=username, email=email)
+                user.set_password(password)
+                user.save()
+
+                messages.success(request, 'Account Created Successfully!')
+                return render(request, 'authentication/register.html')
+            
+            else:
+                messages.error(request, 'Account already created with this email.')
+                return render(request, 'authentication/register.html')
+        else:
+                messages.error(request, 'Username unavailable. Select another username.')
+                return render(request, 'authentication/register.html')
+
+        
+
+        
 
 
 class LoginView(View):

@@ -13,6 +13,9 @@ const emailArea = document.querySelector('.invalid-email');
 const showPasswordToggle = document.querySelector('.showPasswordToggle');
 const passwordField = document.querySelector('#passwordField');
 
+// For disabling Submit button when there's error
+const submitBtn = document.querySelector('.submit-btn');
+
 
 
 // username validation starts here
@@ -23,6 +26,9 @@ usernameField.addEventListener('keyup', (e) => {
     usernameSuccessOutput.style.display = "block";
 
     usernameSuccessOutput.textContent = `Checking ${usernameVal}`;
+
+    //Disable Submit button
+    submitBtn.removeAttribute("disabled", "disabled");
 
     // Adding Default value on CSS properties
     usernameField.classList.remove("is-invalid")
@@ -43,6 +49,8 @@ usernameField.addEventListener('keyup', (e) => {
             usernameSuccessOutput.style.display = "none";
 
             if(data.username_error){
+                //Disable Submit button
+                submitBtn.setAttribute("disabled", "disabled");
                 // Adding Error CSS and Message
                 usernameField.classList.add("is-invalid")
                 feedbackArea.style.display = 'block'
@@ -58,6 +66,8 @@ usernameField.addEventListener('keyup', (e) => {
 emailField.addEventListener('keyup', (e) => {
     const emailVal = e.target.value; //Getting the event value
 
+    //Enable Submit button
+    submitBtn.removeAttribute("disabled", "disabled");
     // Adding Default value on CSS properties
     emailField.classList.remove("is-invalid")
     emailArea.style.display = 'none'
@@ -74,10 +84,12 @@ emailField.addEventListener('keyup', (e) => {
         .then(data=>{
             console.log('data', data)
             if(data.email_error){
+                //Disable Submit button
+                submitBtn.setAttribute("disabled", "disabled");
                 // Adding Error CSS and Message
-                emailField.classList.add("is-invalid")
-                emailArea.style.display = 'block'
-                emailArea.innerHTML = `<p>${data.email_error}</p>`
+                emailField.classList.add("is-invalid");
+                emailArea.style.display = 'block';
+                emailArea.innerHTML = `<p>${data.email_error}</p>`;
             }
         });
     }
@@ -85,7 +97,6 @@ emailField.addEventListener('keyup', (e) => {
 
 
 // Password SHOW/HIDE Toggle
-
 //New Method
 const handleToggleInput = (e)=>{
     if(showPasswordToggle.textContent === 'SHOW'){
