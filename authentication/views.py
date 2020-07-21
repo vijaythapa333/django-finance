@@ -5,6 +5,14 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User # Default User Model
 from validate_email import validate_email # To validate email, pip install validate-email
 from django.contrib import messages
+from django.core.mail import EmailMessage # To send emails
+from django.urls import reverse
+
+# To generate account activate link
+from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeError
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.contrib.sites.shortcuts import get_current_site
+from .utils import token_generator
 
 # Create your views here.
 
@@ -71,7 +79,32 @@ class RegistrationView(View):
                 # CREATE USER ACCOUNT
                 user = User.objects.create_user(username=username, email=email)
                 user.set_password(password)
+                user.is_active = False # Account will only be active after email verification
                 user.save()
+
+                # Send an Email to verify account
+                ## Path/link to verify email
+                ## - Getting the Domain we're on
+                domain = get_current_site(request).domain # our Site URL
+
+                ## - encode UID
+                uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+                ## - Token
+                token = token_generator.make_token(user)
+                ## - Relative URL to verification
+                link = reverse('activate', kwargs={'uidb64': uidb64,'token': token})
+
+                activate_url = 'http://'+domain+link
+
+                email_body = 'Hi ' + user.username + ', \nPlease use this link to verify your account \n' + activate_url
+                email_subject = 'Activate your account.'
+                email = EmailMessage(
+                    email_subject,
+                    email_body,
+                    'testvijayapps@gmail.com',
+                    [email],
+                )
+                email.send(fail_silently=False)
 
                 messages.success(request, 'Account Created Successfully!')
                 return render(request, 'authentication/register.html')
@@ -83,7 +116,10 @@ class RegistrationView(View):
                 messages.error(request, 'Username unavailable. Select another username.')
                 return render(request, 'authentication/register.html')
 
-        
+
+class VerificationView(View):
+    def get(self, request, uidb64, token):
+        return redirect('login')
 
         
 
