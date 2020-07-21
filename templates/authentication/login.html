@@ -20,6 +20,8 @@ Login
                 <div class="card-body">
                     <form method="post" action="">
 
+                        {% include 'partials/_messages.html' %}
+
                         <div class="form-group">
                             <label for="emailField">Username</label>
                             <input type="text" name="username" class="form-control" id="usernameField" placeholder="Username">

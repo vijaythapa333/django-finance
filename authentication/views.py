@@ -106,7 +106,7 @@ class RegistrationView(View):
                 )
                 email.send(fail_silently=False)
 
-                messages.success(request, 'Account Created Successfully!')
+                messages.success(request, 'Account Created! Check your email to verify account.')
                 return render(request, 'authentication/register.html')
             
             else:
@@ -119,7 +119,34 @@ class RegistrationView(View):
 
 class VerificationView(View):
     def get(self, request, uidb64, token):
-        return redirect('login')
+        # Converting ID into Human Readable Text
+        
+        try:
+            id = force_text(urlsafe_base64_decode(uidb64))
+            user = User.objects.get(pk=id)
+
+            # Check whether the link is clicked previously or not
+            if not token_generator.check_token(user, token):
+                messages.success(request, "Account is already active. Please Login.") # Link Clicked already
+                return redirect('login')
+            
+
+            # Check whether the user is active or not
+            if user.is_active:
+                messages.success(request, "Account is already active. Please Login.") # Account is already active
+                return render('login')
+            
+            # Else Activate User
+            user.is_active = True
+            user.save()
+
+            messages.success(request, "Account activated successfully. Login now.")
+            return redirect('login')
+
+        except Exception as e:
+            messages.error(request, "Failed to activate user.")
+            return redirect('register')
+        
 
         
 
