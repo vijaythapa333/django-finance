@@ -15,6 +15,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from .utils import token_generator
 
 from django.contrib import auth # To work on login processes
+from django.conf import settings
 
 # Create your views here.
 
@@ -103,7 +104,8 @@ class RegistrationView(View):
                 email = EmailMessage(
                     email_subject,
                     email_body,
-                    'testvijayapps@gmail.com',
+                    # 'testvijayapps@gmail.com',
+                    settings.EMAIL_HOST_USER,
                     [email],
                 )
                 email.send(fail_silently=False)
@@ -196,3 +198,41 @@ class LogoutView(View):
         auth.logout(request)
         messages.success(request, "You have been logged out.")
         return redirect('login')
+
+
+class RequestResetEmailView(View):
+    def get(self, request):
+        return render(request, 'authentication/request-reset-email.html')
+    
+    def post(self, request):
+        email = request.POST['email']
+
+        # Check whether the email is valid or not
+        if not validate_email(email):
+            messages.error(request, "Please add a valid email address.")
+            return render(request, 'authentication/request-reset-email.html')
+        
+        # Check whether the user exists or not
+        user = User.objects.filter(email=email)
+        
+        if user.exists():
+            # current_site = get_current_site(request) # our Site URL
+            # email_subject = '[Reset your password.]'
+
+            # email_body = render_to_string()
+            
+            # email = EmailMessage(
+            #     email_subject,
+            #     email_body,
+            #     settings.EMAIL_HOST_USER,
+            #     [email],
+            # )
+            # email.send(fail_silently=False)
+            # I'll do it later
+            pass
+
+
+        messages.error(request, "Account not found with this email address.")
+        return render(request, 'authentication/request-reset-email.html')
+
+        return render(request, 'authentication/login.html')

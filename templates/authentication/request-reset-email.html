@@ -1,0 +1,51 @@
+{% extends 'base_auth.html' %}
+{% load static %}
+
+
+{% block title %}
+Request Reset Email 
+{% endblock title %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-4"></div>
+
+        <div class="col-md-4">
+            <div class="card mt-5">
+                <div class="card-header">
+                    <h4>Provide Email to get password reset instructions</h4>
+
+                    
+                </div>
+
+                <div class="card-body">
+                    <form method="post" action="{% url 'request-reset-email' %}">
+
+                        {% include 'partials/_messages.html' %}
+
+                        {% csrf_token %}
+
+                        <div class="form-group">
+                            <label for="emailField">Email address</label>
+                            <input type="email" name="email" class="form-control" id="emailField" placeholder="Email" value="{{ fieldValues.email }}">
+                        </div>
+                        <div class="invalid-email invalid-feedback" style="display:none;"></div>
+                        {% comment %} <p class="text-sm text-success emailSuccessOutput">Email is Valid.</p> {% endcomment %}
+
+                        <button type="submit" class="btn btn-primary btn-block submit-btn">Request Reset</button>
+
+                    </form>
+                </div>
+
+                <div class="card-footer">
+                    <label>Have an Account? <a href="{% url 'login' %}">Login.</a></label><br />
+                    <label>Don't have an Account? <a href="{% url 'register' %}">Sign Up.</a></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4"></div>
+    </div>
+
+    <script src="{% static 'js/register.js' %}"></script>
+{% endblock content %}

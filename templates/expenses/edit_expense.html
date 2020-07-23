@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    Add Expense
+    Edit Expense
 {% endblock title %}
 
 
@@ -12,7 +12,7 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{% url 'expenses' %}">Expenses</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Add Expense</li>
+                    <li class="breadcrumb-item active" aria-current="page">Edit Expense</li>
                 </ol>
             </nav>
         </div>
@@ -24,7 +24,7 @@
     <div class="card">
         <form method="POST">
             <div class="card-header">
-                <h5>Add Expense</h5>
+                <h5>Edit Expense</h5>
             </div>
 
             <div class="card-body">
@@ -33,30 +33,31 @@
 
                 <div class="form-group">
                     <label for="">Amount</label>
-                    <input type="number" name="amount" class="form-control" value="{{ values.amount }}" />
+                    <input type="number" name="amount" class="form-control" value="{{ expense.amount }}" />
                 </div>
 
                 <div class="form-group">
                     <label for="">Description</label>
-                    <textarea name="description" class="form-control">{{ values.description }}</textarea>
+                    <textarea name="description" class="form-control">{{ expense.description }}</textarea>
                 </div>
 
                 <div class="form-group">
                     <label for="">Category</label>
                     <select name="category" class="form-control">
                         {% for category in categories %}
-                            <option value="{{ category.id }}">{{ category.name }}</option>
+                            <option value="{{ category.id }}" {% if category.id == expense.category.id %} selected {% endif %}>{{ category.name }}</option>
                         {% endfor %}
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label for="">Date</label>
-                    <input type="date" name="date" class="form-control" value="{{ values.date }}" />
+                    <input type="date" name="date" class="form-control" value="{{ expense.date|date:'Y-m-d' }}" />
+                    <input type="hidden" name="expense_id" value="{{ expense.id }}" />
                 </div>
 
                 <div class="form-group">
-                    <input type="submit" value="Add Expense" class="form-control btn-primary" />
+                    <input type="submit" value="Update Expense" class="form-control btn-primary" />
                 </div>
 
             </div>

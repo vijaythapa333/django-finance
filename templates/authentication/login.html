@@ -43,7 +43,8 @@ Login
                 </div>
 
                 <div class="card-footer">
-                    <label>Don't have an Account? <a href="{% url 'register' %}">Register.</a></label>
+                    <label><a href="{% url 'request-reset-email' %}">Forgot Password.</a></label> <br />
+                    <label>Don't have an Account? <a href="{% url 'register' %}">Register.</a></label>      
                 </div>
             </div>
         </div>
@@ -51,5 +52,21 @@ Login
         <div class="col-md-4"></div>
     </div>
 
-    <script src="{% static 'js/register.js' %}"></script>
+
+    {% comment %} Show/Hide Password {% endcomment %}
+    <script>
+        const showPasswordToggle = document.querySelector('.showPasswordToggle');
+        const passwordField = document.querySelector('#passwordField');
+
+        showPasswordToggle.addEventListener('click', (e) => {
+            // console.log('mouse found');
+            if(showPasswordToggle.textContent === 'SHOW'){
+                showPasswordToggle.textContent = 'HIDE';
+                passwordField.setAttribute("type","text");
+            } else {
+                showPasswordToggle.textContent = 'SHOW';
+                passwordField.setAttribute("type","password");
+            }
+        });
+    </script>
 {% endblock content %}
