@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Welcome to the Expense Tracker
+{% endblock title %}
+
+
+{% block content %}
+    <div class="row mt-4">
+        <div class="col-md-10">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Incomes</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">My Income</li>
+                </ol>
+            </nav>
+        </div>
+
+        <div class="col-md-2">
+            <a href="{% url 'add-income' %}" class="btn btn-primary">Add Income</a>
+        </div>
+    </div>
+
+    {% include 'partials/_messages.html' %}
+
+    <div class="row">
+        <div class="col-md-8"></div>
+
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="text" class="form-control" id="searchField" placeholder="Search" />
+            </div>
+        </div>
+    </div>
+    
+        <div class="table-responsive mt-4 app-table">
+            <table class="table table-hover">
+                <thead class="thead-light">
+                    <tr>
+                    <th scope="col">Description</th>
+                    <th scope="col">Source</th>
+                    <th scope="col">Amount ({{ user_preference.currency }})</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if incomes.count %}
+
+                    {% for income in page_obj %}
+                        <tr>
+                        <td>{{ income.description }}</td>
+                        <td>{{ income.source }}</td>
+                        <td>{{ income.amount }}</td>
+                        <td>{{ income.date }}</td>
+                        <td>
+                            <a href="{% url 'edit-income' income.id %}" class="btn btn-success btn-sm">Edit</a> 
+                            <a href="{% url 'delete-income' income.id %}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
+                        </td>
+                        </tr>
+                    {% endfor %}
+
+                    {% else %}
+
+                        <tr>
+                            <th colspan="5" class="alert alert-danger">No Income to show.</th>
+                        </tr>
+
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+
+        <div class="table-responsive mt-4 table-output">
+            <table class="table table-hover">
+                <thead class="thead-light">
+                    <tr>
+                    <th scope="col">Description</th>
+                    <th scope="col">Source</th>
+                    <th scope="col">Amount (Currency)</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody class="table-body">
+                    
+                </tbody>
+            </table>
+        </div>
+
+
+    <div class="row pagination-container">
+        <div class="col-md-3">
+            Showing page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+        </div>
+
+        <div class="col-md-9">
+            <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-end">
+                {% if page_obj.has_previous %}
+                    <li {% if page_obj.number == 1 %} class="page-item active" {% endif %}><a class="page-link" href="?page=1">&laquo; First</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">previous</a></li>
+                {% endif %}
+
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </a>
+                </li>
+
+                {% if page_obj.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">next</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a></li>
+                {% endif %}
+            </ul>
+            </nav>
+        </div>
+    </div>
+
+    
+
+
+
+<script src="{% static 'js/searchIncomes.js' %}"></script>
+
+{% endblock content %}
