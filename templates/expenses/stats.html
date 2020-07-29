@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Welcome to the Expense Tracker
+{% endblock title %}
+
+
+{% block content %}
+    <div class="row mt-4">
+        <div class="col-md-10">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Expenses Summary</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Summary</li>
+                </ol>
+            </nav>
+        </div>
+
+        <div class="col-md-2">
+            <a href="{% url 'add-expense' %}" class="btn btn-primary">Back</a>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-6">
+            <canvas id="myChart" width="400" height="400"></canvas>
+        </div>
+    </div>
+
+    <script src="{% static 'js/stats.js' %}"></script>
+{% comment %} <script src="{% static 'js/searchExpenses.js' %}"></script> {% endcomment %}
+
+{% endblock content %}
